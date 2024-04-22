@@ -42,6 +42,31 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    flavorDimensions += "environment"
+    productFlavors{
+
+        create("mock"){
+            dimension = "environment"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-mock"
+            buildConfigField("String", "BASE_URL", "\"https://gsi.fly.dev/\"")
+        }
+        create("prod"){
+            dimension = "environment"
+            applicationIdSuffix = ".prod"
+            versionNameSuffix = "-prod"
+            buildConfigField("String", "BASE_URL", "\"https://gsi.fly.dev/\"")
+        }
+    }
+
+    androidComponents {
+        beforeVariants { variantBuilder ->
+            if (variantBuilder.name == "mockRelease" || variantBuilder.name == "prodDebug") {
+                variantBuilder.enable = false
+            }
+        }
+    }
 }
 
 dependencies {

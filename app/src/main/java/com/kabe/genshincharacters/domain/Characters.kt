@@ -3,9 +3,10 @@ package com.kabe.genshincharacters.domain
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.kabe.genshincharacters.constant.AppConstants
 import java.io.Serializable
 
-@Entity("characters")
+@Entity(AppConstants.DATABASE_NAME)
 data class Characters(
     @PrimaryKey
     @SerializedName("id") var id: String = "",

@@ -8,5 +8,4 @@ data class CharactersResponse(
     @SerializedName("results") var results: List<Characters>,
     @SerializedName("total_results") var totalResults: Int,
     @SerializedName("total_pages") var totalPages: Int,
-
 )
