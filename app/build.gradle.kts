@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
     alias(libs.plugins.daggerHilt)
     id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -68,7 +68,7 @@ dependencies {
 
     // Dagger Hilt
     implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.android.compiler)
+    ksp (libs.dagger.hilt.android.compiler)
 
     // Retrofit
     implementation (libs.squareup.retrofit2.retrofit)
@@ -76,10 +76,10 @@ dependencies {
     implementation (libs.squareup.okhttp3)
     implementation (libs.squareup.gson)
 
+    // Room
+    implementation (libs.androidx.room)
+    implementation (libs.androidx.room.ktx)
+    ksp (libs.androidx.room.compiler)
+    annotationProcessor (libs.androidx.room.compiler)
 
-
-}
-
-kapt {
-    correctErrorTypes = true
 }
