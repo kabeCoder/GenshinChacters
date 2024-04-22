@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
     alias(libs.plugins.daggerHilt)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -32,6 +33,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -48,9 +55,28 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Navigation
+    implementation (libs.navigation.fragment)
+    implementation (libs.navigation.ui)
+
+    // Lifecycle / ktx
+    implementation (libs.lifecycle.livedata)
+    implementation (libs.lifecycle.viewmodel)
+    implementation (libs.lifecycle.runtime)
+    implementation (libs.activity.ktx)
+    implementation (libs.fragment.ktx)
+
     // Dagger Hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.android.compiler)
+
+    // Retrofit
+    implementation (libs.squareup.retrofit2.retrofit)
+    implementation (libs.squareup.retrofit2.converter.gson)
+    implementation (libs.squareup.okhttp3)
+    implementation (libs.squareup.gson)
+
+
 
 }
 
