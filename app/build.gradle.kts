@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
     alias(libs.plugins.daggerHilt)
     id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,6 +42,31 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    flavorDimensions += "environment"
+    productFlavors{
+
+        create("mock"){
+            dimension = "environment"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-mock"
+            buildConfigField("String", "BASE_URL", "\"https://gsi.fly.dev/\"")
+        }
+        create("prod"){
+            dimension = "environment"
+            applicationIdSuffix = ".prod"
+            versionNameSuffix = "-prod"
+            buildConfigField("String", "BASE_URL", "\"https://gsi.fly.dev/\"")
+        }
+    }
+
+    androidComponents {
+        beforeVariants { variantBuilder ->
+            if (variantBuilder.name == "mockRelease" || variantBuilder.name == "prodDebug") {
+                variantBuilder.enable = false
+            }
+        }
+    }
 }
 
 dependencies {
@@ -68,7 +93,7 @@ dependencies {
 
     // Dagger Hilt
     implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.android.compiler)
+    ksp (libs.dagger.hilt.android.compiler)
 
     // Retrofit
     implementation (libs.squareup.retrofit2.retrofit)
@@ -76,10 +101,12 @@ dependencies {
     implementation (libs.squareup.okhttp3)
     implementation (libs.squareup.gson)
 
+    // Room
+    implementation (libs.androidx.room)
+    implementation (libs.androidx.room.ktx)
+    ksp (libs.androidx.room.compiler)
+    annotationProcessor (libs.androidx.room.compiler)
 
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
-}
-
-kapt {
-    correctErrorTypes = true
 }
