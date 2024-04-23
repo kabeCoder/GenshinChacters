@@ -1,5 +1,6 @@
 package com.kabe.genshincharacters.features.home
 
+import android.util.Log
 import androidx.fragment.app.viewModels
 import com.kabe.genshincharacters.databinding.FragmentHomeBinding
 import com.kabe.genshincharacters.domain.Characters
@@ -17,11 +18,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun setUpView() {
         super.setUpView()
 
+        viewmodel.getCharacters(true)
+
         viewBinding.button.setOnClickListener {
             goTo(HomeFragmentDirections.actionHomeFragmentToDetailsFragment())
         }
 
-        viewmodel.getCharacters(true)
+
+
 
 
     }
@@ -31,18 +35,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
         collect(viewmodel.characters) { characters ->
             updateTextView(characters)
+
         }
-    }
-
-
-    private fun updateTextView(characters: List<Characters>) {
-        val text = characters.joinToString(separator = "\n") { it.name }
-        viewBinding.textView.text = text
     }
 
     override fun loadContent() {
         super.loadContent()
     }
 
+    private fun updateTextView(characters: List<Characters>) {
+        val text = characters.joinToString(separator = "\n") { it.name }
+        viewBinding.textView.text = text
+    }
+
 }
+
 
