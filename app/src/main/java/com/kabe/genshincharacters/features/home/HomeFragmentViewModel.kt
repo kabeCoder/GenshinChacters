@@ -36,6 +36,13 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun getCharacters(resetPage: Boolean = false) {
 
+        if (_loadingState.value != PaginationLoadingIndicator.NONE) {
+            return
+        }
+
+        _loadingState.value = if (resetPage) PaginationLoadingIndicator.SWIPE_REFRESH else PaginationLoadingIndicator.MORE
+
+
         viewModelScope.launch {
 
             if (resetPage) {

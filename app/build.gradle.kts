@@ -107,4 +107,6 @@ dependencies {
     ksp (libs.androidx.room.compiler)
     annotationProcessor (libs.androidx.room.compiler)
 
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
 }
