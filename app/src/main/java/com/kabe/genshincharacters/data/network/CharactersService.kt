@@ -1,4 +1,4 @@
-package com.kabe.genshincharacters.network
+package com.kabe.genshincharacters.data.network
 
 import com.kabe.genshincharacters.data.model.response.CharactersResponse
 import retrofit2.http.GET

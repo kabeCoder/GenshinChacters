@@ -1,11 +1,14 @@
 package com.kabe.genshincharacters.di
 
 import android.content.Context
+import androidx.room.Room
 import com.kabe.genshincharacters.BuildConfig
 import com.kabe.genshincharacters.BuildConfig.DEBUG
 import com.kabe.genshincharacters.constant.AppConstants
 import com.kabe.genshincharacters.data.base.RetrofitBuilder
-import com.kabe.genshincharacters.network.CharactersService
+import com.kabe.genshincharacters.data.database.AppDatabase
+import com.kabe.genshincharacters.data.network.CharactersService
+import com.kabe.genshincharacters.data.repository.characters.CharactersRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,5 +59,23 @@ object AppModule {
     fun provideCharactersService(retrofit: Retrofit): CharactersService {
         return retrofit.create(CharactersService::class.java)
     }
+
+
+    @Provides
+    @Singleton
+    fun provideCharactersRepository(
+        charactersService: CharactersService,
+        appDatabase: AppDatabase
+    ): CharactersRepository {
+        return CharactersRepository(charactersService, appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCharactersDb(@ApplicationContext appContext: Context) = Room.databaseBuilder(
+        appContext,
+        AppDatabase::class.java,
+        DATABASE_NAME
+    ).fallbackToDestructiveMigration().build()
 
 }
