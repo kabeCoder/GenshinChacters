@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kabe.genshincharacters.constant.PaginationLoadingIndicator
 import com.kabe.genshincharacters.data.base.Status
 import com.kabe.genshincharacters.domain.Characters
-import com.kabe.genshincharacters.repository.characters.CharactersRepository
+import com.kabe.genshincharacters.data.repository.characters.CharactersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -44,6 +44,25 @@ class HomeFragmentViewModel @Inject constructor(
 
 
         viewModelScope.launch {
+
+            // Load cache on first load
+            if (charactersList.isEmpty()) {
+                val cache = charactersRepository.getCachedCharacters()
+
+                when (cache.status) {
+                    Status.SUCCESS -> {
+                        cache.data?.let { cachedCharacters ->
+                            _characters.emit(cachedCharacters.toMutableList())
+                        }
+                    }
+                    Status.ERROR -> {
+                        cache.message?.let {
+                            _errorMessage.emit(it)
+                        }
+                    }
+                }
+
+            }
 
             if (resetPage) {
                 currentPage = 0
